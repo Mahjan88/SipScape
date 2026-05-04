@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppProvider, useApp } from './src/context/AppContext';
+import WelcomeScreen from './src/screens/WelcomeScreen';
+import PhoneAuthScreen from './src/screens/PhoneAuthScreen';
+import OnboardingScreen from './src/screens/OnboardingScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import PassportScreen from './src/screens/PassportScreen';
 import BingoScreen from './src/screens/BingoScreen';
@@ -21,7 +24,7 @@ const TABS = [
 
 function Header() {
   const insets = useSafeAreaInsets();
-  const { xp } = useApp();
+  const { xp, profile } = useApp();
 
   return (
     <View style={[headerStyles.container, { paddingTop: insets.top + 12 }]}>
@@ -36,7 +39,7 @@ function Header() {
           <Text style={headerStyles.xpText}>⚡ {xp} XP</Text>
         </View>
         <View style={headerStyles.avatar}>
-          <Text style={headerStyles.avatarText}>M</Text>
+          <Text style={headerStyles.avatarText}>{profile?.avatar || '😊'}</Text>
         </View>
       </View>
     </View>
@@ -85,9 +88,11 @@ const headerStyles = StyleSheet.create({
     borderRadius: 17,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.sage,
+    backgroundColor: colors.warmBeige,
+    borderWidth: 2,
+    borderColor: colors.caramel,
   },
-  avatarText: { color: colors.white, fontSize: 14, fontWeight: '600' },
+  avatarText: { fontSize: 18 },
 });
 
 function BottomTabs({ activeTab, onTabPress }) {
@@ -128,18 +133,18 @@ const tabStyles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 2,
   },
-  tabActive: {
-    backgroundColor: 'rgba(212, 165, 116, 0.12)',
-  },
+  tabActive: { backgroundColor: 'rgba(212, 165, 116, 0.12)' },
   tabIcon: { fontSize: 22 },
   tabLabel: { fontSize: 10, fontWeight: '600', color: colors.mocha, marginTop: 2 },
 });
 
-function AppContent() {
+function MainApp() {
   const [activeTab, setActiveTab] = useState('Home');
+  const { profile } = useApp();
 
   const navigate = (tab) => setActiveTab(tab);
 
+  // Personalize greeting with profile name
   return (
     <View style={styles.container}>
       <Header />
@@ -156,6 +161,51 @@ function AppContent() {
   );
 }
 
+function AppContent() {
+  const { authState, setAuthState, setProfile } = useApp();
+
+  // Auth flow: welcome → phone → onboarding → main app
+  if (authState === 'welcome') {
+    return (
+      <>
+        <WelcomeScreen onGetStarted={() => setAuthState('phone')} />
+        <StatusBar style="dark" />
+      </>
+    );
+  }
+
+  if (authState === 'phone') {
+    return (
+      <>
+        <PhoneAuthScreen
+          onComplete={(phone) => {
+            setProfile((prev) => ({ ...prev, phone }));
+            setAuthState('onboarding');
+          }}
+          onBack={() => setAuthState('welcome')}
+        />
+        <StatusBar style="dark" />
+      </>
+    );
+  }
+
+  if (authState === 'onboarding') {
+    return (
+      <>
+        <OnboardingScreen
+          onComplete={(profileData) => {
+            setProfile((prev) => ({ ...prev, ...profileData }));
+            setAuthState('authenticated');
+          }}
+        />
+        <StatusBar style="dark" />
+      </>
+    );
+  }
+
+  return <MainApp />;
+}
+
 export default function App() {
   return (
     <SafeAreaProvider>
@@ -167,11 +217,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.warmCream,
-  },
-  screenContainer: {
-    flex: 1,
-  },
+  container: { flex: 1, backgroundColor: colors.warmCream },
+  screenContainer: { flex: 1 },
 });

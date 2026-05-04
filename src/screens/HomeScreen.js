@@ -12,12 +12,13 @@ const featureCards = [
 ];
 
 export default function HomeScreen({ navigation }) {
-  const { stampCount, streak } = useApp();
+  const { stampCount, streak, profile } = useApp();
+  const name = profile?.firstName || 'there';
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <View style={styles.greeting}>
-        <Text style={styles.greetingTitle}>Good morning, Mahsa ☀️</Text>
+        <Text style={styles.greetingTitle}>Good morning, {name} ☀️</Text>
         <Text style={styles.greetingSubtitle}>Ready to discover your next favorite spot?</Text>
       </View>
 

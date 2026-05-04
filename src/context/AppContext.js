@@ -11,6 +11,20 @@ const INITIAL_STATE = {
 };
 
 export function AppProvider({ children }) {
+  // Auth & profile state
+  const [authState, setAuthState] = useState('welcome'); // welcome | phone | onboarding | authenticated
+  const [profile, setProfile] = useState({
+    phone: '',
+    firstName: '',
+    username: '',
+    birthday: '',
+    location: '',
+    avatar: '😊',
+    drinks: [],
+    milk: '',
+  });
+
+  // Game state
   const [xp, setXP] = useState(INITIAL_STATE.xp);
   const [stamps, setStamps] = useState(INITIAL_STATE.stamps);
   const [bingo, setBingo] = useState(INITIAL_STATE.bingo);
@@ -49,9 +63,9 @@ export function AppProvider({ children }) {
   const getTierInfo = useCallback(() => {
     const count = stamps.filter(Boolean).length;
     if (count >= 9) return { name: 'Coffee Legend', emoji: '👑', next: null, needed: 9 };
-    if (count >= 6) return { name: 'Neighborhood Barista', emoji: '☕', next: 'Coffee Legend', needed: 9 };
-    if (count >= 3) return { name: 'Caffeine Explorer', emoji: '🌟', next: 'Neighborhood Barista', needed: 6 };
-    return { name: 'Ballard Beginner', emoji: '🌱', next: 'Caffeine Explorer', needed: 3 };
+    if (count >= 6) return { name: 'Neighborhood Regular', emoji: '☕', next: 'Coffee Legend', needed: 9 };
+    if (count >= 3) return { name: 'Caffeine Explorer', emoji: '🌟', next: 'Neighborhood Regular', needed: 6 };
+    return { name: 'First Sip', emoji: '🌱', next: 'Caffeine Explorer', needed: 3 };
   }, [stamps]);
 
   const checkBingoLine = useCallback(() => {
@@ -80,6 +94,12 @@ export function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        // Auth & profile
+        authState,
+        setAuthState,
+        profile,
+        setProfile,
+        // Game state
         xp,
         stamps,
         bingo,
