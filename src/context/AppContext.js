@@ -30,6 +30,8 @@ export function AppProvider({ children }) {
   const [bingo, setBingo] = useState(INITIAL_STATE.bingo);
   const [spinHistory, setSpinHistory] = useState(INITIAL_STATE.spinHistory);
   const [streak, setStreak] = useState(INITIAL_STATE.streak);
+  // Hunt: Set of cafe IDs the user has collected a cup from (one-time per user)
+  const [collectedCups, setCollectedCups] = useState(new Set());
 
   const addXP = useCallback((amount) => {
     setXP((prev) => prev + amount);
@@ -56,6 +58,25 @@ export function AppProvider({ children }) {
   const addSpin = useCallback((result) => {
     setSpinHistory((prev) => [result, ...prev].slice(0, 5));
     addXP(10);
+  }, [addXP]);
+
+  // Hunt: collect a cup at a cafe (one-time per user, awards points from cafe.points)
+  const collectCup = useCallback((cafeId, points = 50) => {
+    setCollectedCups((prev) => {
+      if (prev.has(cafeId)) return prev; // already collected
+      const next = new Set(prev);
+      next.add(cafeId);
+      return next;
+    });
+    addXP(points);
+    // Also award a passport stamp if not already earned (maps cafe ID to stamp index)
+    const stampIndex = cafeId - 1; // cafe IDs are 1-9, stamps array is 0-8
+    setStamps((prev) => {
+      if (prev[stampIndex]) return prev;
+      const next = [...prev];
+      next[stampIndex] = true;
+      return next;
+    });
   }, [addXP]);
 
   const stampCount = stamps.filter(Boolean).length;
@@ -114,6 +135,8 @@ export function AppProvider({ children }) {
         checkBingoLine,
         bingoCompletedCount,
         bingoRowCount,
+        collectedCups,
+        collectCup,
       }}
     >
       {children}

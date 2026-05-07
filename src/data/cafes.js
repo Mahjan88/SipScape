@@ -7,6 +7,11 @@ export const cafes = [
     drink: 'Honey lavender latte',
     desc: 'A misty corner spot with vintage armchairs and soft jazz',
     tags: ['cozy', 'quiet', 'vintage'],
+    // GPS coordinates — replace with real partner locations before launch
+    lat: 37.7749,
+    lng: -122.4194,
+    address: '101 Market St',
+    points: 50,
   },
   {
     id: 2,
@@ -16,6 +21,10 @@ export const cafes = [
     drink: 'Oat milk matcha',
     desc: 'Plant-filled greenhouse café with natural light for days',
     tags: ['bright', 'plants', 'healthy'],
+    lat: 37.7762,
+    lng: -122.4175,
+    address: '240 Valencia St',
+    points: 50,
   },
   {
     id: 3,
@@ -25,6 +34,10 @@ export const cafes = [
     drink: 'Classic drip coffee',
     desc: 'Record shop meets café — flip through vinyl while you sip',
     tags: ['music', 'social', 'retro'],
+    lat: 37.7735,
+    lng: -122.4210,
+    address: '75 Haight St',
+    points: 50,
   },
   {
     id: 4,
@@ -34,6 +47,10 @@ export const cafes = [
     drink: 'Vanilla cloud cold brew',
     desc: 'Airy, minimalist space with the fluffiest foam in town',
     tags: ['minimal', 'dreamy', 'instagram'],
+    lat: 37.7780,
+    lng: -122.4160,
+    address: '580 Howard St',
+    points: 60,
   },
   {
     id: 5,
@@ -43,6 +60,10 @@ export const cafes = [
     drink: 'Smoked maple cappuccino',
     desc: 'Fireplace, exposed brick, and the warmest baristas around',
     tags: ['cozy', 'warm', 'fireplace'],
+    lat: 37.7721,
+    lng: -122.4230,
+    address: '310 Fillmore St',
+    points: 50,
   },
   {
     id: 6,
@@ -52,6 +73,10 @@ export const cafes = [
     drink: 'Coconut cold brew',
     desc: 'Ocean-inspired with salty air and sea-blue walls',
     tags: ['bright', 'coastal', 'relaxing'],
+    lat: 37.7798,
+    lng: -122.4145,
+    address: '900 The Embarcadero',
+    points: 60,
   },
   {
     id: 7,
@@ -61,6 +86,10 @@ export const cafes = [
     drink: 'Cardamom mocha',
     desc: 'Floor-to-ceiling books and a reading nook to disappear into',
     tags: ['quiet', 'books', 'cozy'],
+    lat: 37.7710,
+    lng: -122.4185,
+    address: '420 Mission St',
+    points: 50,
   },
   {
     id: 8,
@@ -70,6 +99,10 @@ export const cafes = [
     drink: 'Espresso tonic',
     desc: 'Early bird favorite — bright, buzzy, and full of good energy',
     tags: ['energetic', 'social', 'morning'],
+    lat: 37.7768,
+    lng: -122.4220,
+    address: '155 Grove St',
+    points: 40,
   },
   {
     id: 9,
@@ -79,6 +112,10 @@ export const cafes = [
     drink: 'Rose latte',
     desc: 'Garden patio café with dried flowers hanging from the ceiling',
     tags: ['garden', 'romantic', 'aesthetic'],
+    lat: 37.7743,
+    lng: -122.4200,
+    address: '88 Dolores St',
+    points: 50,
   },
 ];
 
